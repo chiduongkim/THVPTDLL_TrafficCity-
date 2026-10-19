@@ -1,0 +1,9 @@
+
+
+
+camera_id,camera_name,location,latitude,longitude,road_name,number_of_lanes
+1,CAM_HN01,Nga tu Dai Co Viet - Giai Phong,21.0024,105.8432,Dai Co Viet,4
+2,CAM_HN02,Nga tu Nguyen Trai - Khuat Duy Tien,20.9963,105.8005,Nguyen Trai,6
+3,CAM_HN03,Cau Vinh Tuy,20.9978,105.8752,Cau Vinh Tuy,4
+4,CAM_HN04,Nga tu Cau Giay,21.0285,105.796,Cau Giay,4
+5,CAM_HN05,Nga tu Tran Duy Hung - Hoang Minh Giam,21.0105,105.8015,Tran Duy Hung,6

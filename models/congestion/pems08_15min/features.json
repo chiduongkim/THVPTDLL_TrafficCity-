@@ -1,0 +1,36 @@
+{
+  "features": [
+    "speed_kmh",
+    "flow",
+    "occupancy",
+    "zero_flow_steps",
+    "speed_kmh_lag15m",
+    "flow_lag15m",
+    "occupancy_lag15m",
+    "speed_kmh_lag30m",
+    "flow_lag30m",
+    "occupancy_lag30m",
+    "speed_kmh_lag45m",
+    "flow_lag45m",
+    "occupancy_lag45m",
+    "speed_kmh_lag60m",
+    "flow_lag60m",
+    "occupancy_lag60m",
+    "speed_kmh_lag120m",
+    "flow_lag120m",
+    "occupancy_lag120m",
+    "speed_roll_mean_1h",
+    "speed_roll_std_1h",
+    "speed_roll_min_1h",
+    "flow_roll_mean_1h",
+    "speed_delta_1h",
+    "time_of_day_h",
+    "day_of_week",
+    "is_weekend"
+  ],
+  "classes": [
+    "free",
+    "congested",
+    "severe"
+  ]
+}

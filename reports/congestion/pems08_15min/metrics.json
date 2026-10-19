@@ -1,0 +1,566 @@
+{
+  "created_utc": "2026-10-18T07:20:57Z",
+  "data_source": "PEMS08 (PeMS District 8, San Bernardino, California) - NOT Hanoi",
+  "resolution": "15min",
+  "horizon_minutes": 60,
+  "horizon_steps": 4,
+  "thresholds_kmh": {
+    "free_above": 26.0,
+    "congested_min": 16.0,
+    "congested_max": 26.0
+  },
+  "seed": 42,
+  "features": [
+    "speed_kmh",
+    "flow",
+    "occupancy",
+    "zero_flow_steps",
+    "speed_kmh_lag15m",
+    "flow_lag15m",
+    "occupancy_lag15m",
+    "speed_kmh_lag30m",
+    "flow_lag30m",
+    "occupancy_lag30m",
+    "speed_kmh_lag45m",
+    "flow_lag45m",
+    "occupancy_lag45m",
+    "speed_kmh_lag60m",
+    "flow_lag60m",
+    "occupancy_lag60m",
+    "speed_kmh_lag120m",
+    "flow_lag120m",
+    "occupancy_lag120m",
+    "speed_roll_mean_1h",
+    "speed_roll_std_1h",
+    "speed_roll_min_1h",
+    "flow_roll_mean_1h",
+    "speed_delta_1h",
+    "time_of_day_h",
+    "day_of_week",
+    "is_weekend"
+  ],
+  "feature_info": {
+    "lags_steps": [
+      1,
+      2,
+      3,
+      4,
+      8
+    ],
+    "roll_steps": 4,
+    "step_minutes": 15
+  },
+  "feature_rules": "chi dung thong tin <= t cua cung sensor; khong thoi tiet, khong incident; khong sensor_id; khong imputation/scaling (khong co buoc nao fit tren toan bo du lieu)",
+  "rows": {
+    "labeled_rows": 1011160,
+    "after_dropping_missing_lags": 1009800,
+    "dropped_missing_lags": 1360
+  },
+  "split": {
+    "unique_timestamps_usable": 5940,
+    "train_range": [
+      "2016-07-01T02:00:00.000000",
+      "2016-08-13T08:15:00.000000"
+    ],
+    "validation_range": [
+      "2016-08-13T09:30:00.000000",
+      "2016-08-22T15:00:00.000000"
+    ],
+    "test_range": [
+      "2016-08-22T16:15:00.000000",
+      "2016-08-31T22:45:00.000000"
+    ],
+    "embargo_minutes": 60,
+    "note": "Hang cuoi cua train/validation (trong khoang horizon) bi bo de nhan khong lay du lieu tap sau."
+  },
+  "class_distribution": {
+    "train": {
+      "rows": 706180,
+      "free": 705547,
+      "congested": 452,
+      "severe": 181
+    },
+    "validation": {
+      "rows": 150790,
+      "free": 150557,
+      "congested": 166,
+      "severe": 67
+    },
+    "test": {
+      "rows": 151470,
+      "free": 151266,
+      "congested": 112,
+      "severe": 92
+    }
+  },
+  "baselines": {
+    "majority_class_from_train": "free",
+    "persistence": "du doan muc un tac tai t+1h = muc hien tai tai t"
+  },
+  "search": {
+    "decision_tree_grid": {
+      "max_depth": [
+        "6",
+        "10",
+        "14"
+      ],
+      "min_samples_leaf": [
+        "20",
+        "100"
+      ],
+      "class_weight": [
+        "None",
+        "balanced"
+      ]
+    },
+    "random_forest_grid": {
+      "max_depth": [
+        "12",
+        "20"
+      ],
+      "min_samples_leaf": [
+        "20",
+        "100"
+      ],
+      "class_weight": [
+        "None",
+        "balanced_subsample"
+      ]
+    },
+    "random_forest_fixed": {
+      "n_estimators": 100,
+      "max_features": "sqrt",
+      "bootstrap": true,
+      "max_samples": 0.3
+    },
+    "selection_metric": "validation macro-F1 tren cac lop co mau (tie-break: balanced accuracy)"
+  },
+  "chosen_params": {
+    "decision_tree": {
+      "max_depth": 10,
+      "min_samples_leaf": 20,
+      "class_weight": null
+    },
+    "random_forest": {
+      "max_depth": 20,
+      "min_samples_leaf": 20,
+      "class_weight": "balanced_subsample"
+    }
+  },
+  "final_fit": "huan luyen lai tren train voi tham so da chon; validation chi dung de chon tham so; test chi danh gia mot lan",
+  "metrics": {
+    "validation": {
+      "baseline_majority": {
+        "n": 150790,
+        "accuracy": 0.9984548046952716,
+        "balanced_accuracy": 0.3333333333333333,
+        "macro_f1_present_classes": 0.33307560165965927,
+        "macro_f1_all_3_classes": 0.33307560165965927,
+        "per_class": {
+          "free": {
+            "precision": 0.9984548046952716,
+            "recall": 1.0,
+            "f1": 0.9992268049789778,
+            "support": 150557
+          },
+          "congested": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 166
+          },
+          "severe": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 67
+          }
+        },
+        "confusion_matrix": [
+          [
+            150557,
+            0,
+            0
+          ],
+          [
+            166,
+            0,
+            0
+          ],
+          [
+            67,
+            0,
+            0
+          ]
+        ],
+        "predicted_counts": {
+          "free": 150790,
+          "congested": 0,
+          "severe": 0
+        }
+      },
+      "baseline_persistence": {
+        "n": 150790,
+        "accuracy": 0.9983486968631872,
+        "balanced_accuracy": 0.6645150509463206,
+        "macro_f1_present_classes": 0.6645150509463206,
+        "macro_f1_all_3_classes": 0.6645150509463206,
+        "per_class": {
+          "free": {
+            "precision": 0.9992096016790983,
+            "recall": 0.9992096016790983,
+            "f1": 0.9992096016790983,
+            "support": 150557
+          },
+          "congested": {
+            "precision": 0.3674698795180723,
+            "recall": 0.3674698795180723,
+            "f1": 0.3674698795180723,
+            "support": 166
+          },
+          "severe": {
+            "precision": 0.6268656716417911,
+            "recall": 0.6268656716417911,
+            "f1": 0.6268656716417911,
+            "support": 67
+          }
+        },
+        "confusion_matrix": [
+          [
+            150438,
+            101,
+            18
+          ],
+          [
+            98,
+            61,
+            7
+          ],
+          [
+            21,
+            4,
+            42
+          ]
+        ],
+        "predicted_counts": {
+          "free": 150557,
+          "congested": 166,
+          "severe": 67
+        }
+      },
+      "decision_tree": {
+        "n": 150790,
+        "accuracy": 0.9986205981829034,
+        "balanced_accuracy": 0.5087349002147744,
+        "macro_f1_present_classes": 0.5824051352629024,
+        "macro_f1_all_3_classes": 0.5824051352629024,
+        "per_class": {
+          "free": {
+            "precision": 0.9987725665302114,
+            "recall": 0.9998605179433703,
+            "f1": 0.9993162461248415,
+            "support": 150557
+          },
+          "congested": {
+            "precision": 0.47368421052631576,
+            "recall": 0.10843373493975904,
+            "f1": 0.17647058823529413,
+            "support": 166
+          },
+          "severe": {
+            "precision": 0.9032258064516129,
+            "recall": 0.417910447761194,
+            "f1": 0.5714285714285714,
+            "support": 67
+          }
+        },
+        "confusion_matrix": [
+          [
+            150536,
+            19,
+            2
+          ],
+          [
+            147,
+            18,
+            1
+          ],
+          [
+            38,
+            1,
+            28
+          ]
+        ],
+        "predicted_counts": {
+          "free": 150721,
+          "congested": 38,
+          "severe": 31
+        }
+      },
+      "random_forest": {
+        "n": 150790,
+        "accuracy": 0.9981961668545659,
+        "balanced_accuracy": 0.6694370393028568,
+        "macro_f1_present_classes": 0.6465886312724513,
+        "macro_f1_all_3_classes": 0.6465886312724513,
+        "per_class": {
+          "free": {
+            "precision": 0.999229389490467,
+            "recall": 0.9990501936143786,
+            "f1": 0.9991397835177208,
+            "support": 150557
+          },
+          "congested": {
+            "precision": 0.3370165745856354,
+            "recall": 0.3674698795180723,
+            "f1": 0.3515850144092219,
+            "support": 166
+          },
+          "severe": {
+            "precision": 0.5443037974683544,
+            "recall": 0.6417910447761194,
+            "f1": 0.589041095890411,
+            "support": 67
+          }
+        },
+        "confusion_matrix": [
+          [
+            150414,
+            117,
+            26
+          ],
+          [
+            95,
+            61,
+            10
+          ],
+          [
+            21,
+            3,
+            43
+          ]
+        ],
+        "predicted_counts": {
+          "free": 150530,
+          "congested": 181,
+          "severe": 79
+        }
+      }
+    },
+    "test": {
+      "baseline_majority": {
+        "n": 151470,
+        "accuracy": 0.9986531986531987,
+        "balanced_accuracy": 0.3333333333333333,
+        "macro_f1_present_classes": 0.3331087151841869,
+        "macro_f1_all_3_classes": 0.3331087151841869,
+        "per_class": {
+          "free": {
+            "precision": 0.9986531986531987,
+            "recall": 1.0,
+            "f1": 0.9993261455525606,
+            "support": 151266
+          },
+          "congested": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 112
+          },
+          "severe": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 92
+          }
+        },
+        "confusion_matrix": [
+          [
+            151266,
+            0,
+            0
+          ],
+          [
+            112,
+            0,
+            0
+          ],
+          [
+            92,
+            0,
+            0
+          ]
+        ],
+        "predicted_counts": {
+          "free": 151470,
+          "congested": 0,
+          "severe": 0
+        }
+      },
+      "baseline_persistence": {
+        "n": 151470,
+        "accuracy": 0.998474945533769,
+        "balanced_accuracy": 0.6210006061607459,
+        "macro_f1_present_classes": 0.6210006061607459,
+        "macro_f1_all_3_classes": 0.6210006061607459,
+        "per_class": {
+          "free": {
+            "precision": 0.999259582457393,
+            "recall": 0.999259582457393,
+            "f1": 0.999259582457393,
+            "support": 151266
+          },
+          "congested": {
+            "precision": 0.2767857142857143,
+            "recall": 0.2767857142857143,
+            "f1": 0.2767857142857143,
+            "support": 112
+          },
+          "severe": {
+            "precision": 0.5869565217391305,
+            "recall": 0.5869565217391305,
+            "f1": 0.5869565217391305,
+            "support": 92
+          }
+        },
+        "confusion_matrix": [
+          [
+            151154,
+            78,
+            34
+          ],
+          [
+            77,
+            31,
+            4
+          ],
+          [
+            35,
+            3,
+            54
+          ]
+        ],
+        "predicted_counts": {
+          "free": 151266,
+          "congested": 112,
+          "severe": 92
+        }
+      },
+      "decision_tree": {
+        "n": 151470,
+        "accuracy": 0.9987390242292203,
+        "balanced_accuracy": 0.5145362118872,
+        "macro_f1_present_classes": 0.5726230779191601,
+        "macro_f1_all_3_classes": 0.5726230779191601,
+        "per_class": {
+          "free": {
+            "precision": 0.9990156960152203,
+            "recall": 0.9997421760342707,
+            "f1": 0.9993788039994449,
+            "support": 151266
+          },
+          "congested": {
+            "precision": 0.25,
+            "recall": 0.09821428571428571,
+            "f1": 0.14102564102564102,
+            "support": 112
+          },
+          "severe": {
+            "precision": 0.82,
+            "recall": 0.44565217391304346,
+            "f1": 0.5774647887323944,
+            "support": 92
+          }
+        },
+        "confusion_matrix": [
+          [
+            151227,
+            32,
+            7
+          ],
+          [
+            99,
+            11,
+            2
+          ],
+          [
+            50,
+            1,
+            41
+          ]
+        ],
+        "predicted_counts": {
+          "free": 151376,
+          "congested": 44,
+          "severe": 50
+        }
+      },
+      "random_forest": {
+        "n": 151470,
+        "accuracy": 0.9981316432296824,
+        "balanced_accuracy": 0.637049947853505,
+        "macro_f1_present_classes": 0.6033789409167597,
+        "macro_f1_all_3_classes": 0.6033789409167597,
+        "per_class": {
+          "free": {
+            "precision": 0.9992725204520955,
+            "recall": 0.9988827628151733,
+            "f1": 0.9990776036208191,
+            "support": 151266
+          },
+          "congested": {
+            "precision": 0.2222222222222222,
+            "recall": 0.30357142857142855,
+            "f1": 0.25660377358490566,
+            "support": 112
+          },
+          "severe": {
+            "precision": 0.509090909090909,
+            "recall": 0.6086956521739131,
+            "f1": 0.5544554455445545,
+            "support": 92
+          }
+        },
+        "confusion_matrix": [
+          [
+            151097,
+            119,
+            50
+          ],
+          [
+            74,
+            34,
+            4
+          ],
+          [
+            36,
+            0,
+            56
+          ]
+        ],
+        "predicted_counts": {
+          "free": 151207,
+          "congested": 153,
+          "severe": 110
+        }
+      }
+    }
+  },
+  "environment": {
+    "python": "3.14.0",
+    "numpy": "2.5.4",
+    "pandas": "3.0.6",
+    "scikit_learn": "1.9.1",
+    "joblib": "1.6.0"
+  },
+  "artifacts": {
+    "models": [
+      "models/congestion/pems08_15min/decision_tree.joblib",
+      "models/congestion/pems08_15min/random_forest.joblib"
+    ],
+    "predictions": "data/processed/pems08/predictions_15min_test.parquet",
+    "reports_dir": "reports/congestion/pems08_15min"
+  },
+  "runtime_seconds": 815.3,
+  "xgboost": "khong dung (thu vien khong co san trong moi truong du an)"
+}

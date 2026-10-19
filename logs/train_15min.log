@@ -1,0 +1,36 @@
+[15min] doc 1,011,160 dong, 170 sensor
+   dac trung: 27 cot; bo 1,360 dong dau chuoi thieu lag
+   train     : 706,180 dong | free=705,547, congested=452, severe=181
+   validation: 150,790 dong | free=150,557, congested=166, severe=67
+   test      : 151,470 dong | free=151,266, congested=112, severe=92
+Chon tham so tren validation:
+   decision_tree {'max_depth': 6, 'min_samples_leaf': 20, 'class_weight': None} -> val macro-F1=0.5803 bal-acc=0.5067 (15s)
+   decision_tree {'max_depth': 6, 'min_samples_leaf': 20, 'class_weight': 'balanced'} -> val macro-F1=0.2942 bal-acc=0.6922 (15s)
+   decision_tree {'max_depth': 6, 'min_samples_leaf': 100, 'class_weight': None} -> val macro-F1=0.4357 bal-acc=0.3976 (12s)
+   decision_tree {'max_depth': 6, 'min_samples_leaf': 100, 'class_weight': 'balanced'} -> val macro-F1=0.2945 bal-acc=0.7477 (14s)
+   decision_tree {'max_depth': 10, 'min_samples_leaf': 20, 'class_weight': None} -> val macro-F1=0.5824 bal-acc=0.5087 (20s)
+   decision_tree {'max_depth': 10, 'min_samples_leaf': 20, 'class_weight': 'balanced'} -> val macro-F1=0.3255 bal-acc=0.6361 (18s)
+   decision_tree {'max_depth': 10, 'min_samples_leaf': 100, 'class_weight': None} -> val macro-F1=0.4357 bal-acc=0.3976 (21s)
+   decision_tree {'max_depth': 10, 'min_samples_leaf': 100, 'class_weight': 'balanced'} -> val macro-F1=0.3251 bal-acc=0.6672 (18s)
+   decision_tree {'max_depth': 14, 'min_samples_leaf': 20, 'class_weight': None} -> val macro-F1=0.5824 bal-acc=0.5087 (28s)
+   decision_tree {'max_depth': 14, 'min_samples_leaf': 20, 'class_weight': 'balanced'} -> val macro-F1=0.3526 bal-acc=0.6257 (19s)
+   decision_tree {'max_depth': 14, 'min_samples_leaf': 100, 'class_weight': None} -> val macro-F1=0.4357 bal-acc=0.3976 (28s)
+   decision_tree {'max_depth': 14, 'min_samples_leaf': 100, 'class_weight': 'balanced'} -> val macro-F1=0.3500 bal-acc=0.6474 (19s)
+   random_forest {'max_depth': 12, 'min_samples_leaf': 20, 'class_weight': None} -> val macro-F1=0.3331 bal-acc=0.3333 (65s)
+   random_forest {'max_depth': 12, 'min_samples_leaf': 20, 'class_weight': 'balanced_subsample'} -> val macro-F1=0.6356 bal-acc=0.6822 (50s)
+   random_forest {'max_depth': 12, 'min_samples_leaf': 100, 'class_weight': None} -> val macro-F1=0.3331 bal-acc=0.3333 (63s)
+   random_forest {'max_depth': 12, 'min_samples_leaf': 100, 'class_weight': 'balanced_subsample'} -> val macro-F1=0.5263 bal-acc=0.6893 (46s)
+   random_forest {'max_depth': 20, 'min_samples_leaf': 20, 'class_weight': None} -> val macro-F1=0.3331 bal-acc=0.3333 (78s)
+   random_forest {'max_depth': 20, 'min_samples_leaf': 20, 'class_weight': 'balanced_subsample'} -> val macro-F1=0.6466 bal-acc=0.6694 (49s)
+   random_forest {'max_depth': 20, 'min_samples_leaf': 100, 'class_weight': None} -> val macro-F1=0.3331 bal-acc=0.3333 (72s)
+   random_forest {'max_depth': 20, 'min_samples_leaf': 100, 'class_weight': 'balanced_subsample'} -> val macro-F1=0.5265 bal-acc=0.6814 (49s)
+Tham so da chon: {"decision_tree": {"max_depth": "10", "min_samples_leaf": "20", "class_weight": "None"}, "random_forest": {"max_depth": "20", "min_samples_leaf": "20", "class_weight": "balanced_subsample"}}
+
+=== TEST (dung mot lan) ===
+split                model      n  accuracy  balanced_accuracy  macro_f1_present_classes  macro_f1_all_3_classes
+ test    baseline_majority 151470    0.9987             0.3333                    0.3331                  0.3331
+ test baseline_persistence 151470    0.9985             0.6210                    0.6210                  0.6210
+ test        decision_tree 151470    0.9987             0.5145                    0.5726                  0.5726
+ test        random_forest 151470    0.9981             0.6370                    0.6034                  0.6034
+
+Xong trong 815s. Bao cao: C:\Users\Tuyen\source\repos\traffic-bigdata-project\reports\congestion\pems08_15min

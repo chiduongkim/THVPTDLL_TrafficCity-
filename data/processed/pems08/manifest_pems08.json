@@ -1,0 +1,224 @@
+{
+  "created_utc": "2026-10-18T08:14:51Z",
+  "dataset": "PEMS08",
+  "geography": "PeMS District 8, San Bernardino, California, USA (highway sensors). NOT Hanoi.",
+  "traffic_is_measured": true,
+  "traffic_is_simulated": false,
+  "source": {
+    "file": "data/external/pems08/pems08.npz",
+    "sha256": "e1d03ce74e9fb79149e6e7c37c680214822c4a285baa2f42278cacabcd25c075",
+    "bytes": 18525419,
+    "download_url": "https://raw.githubusercontent.com/Davidham3/ASTGCN-2019-mxnet/master/data/PEMS08/pems08.npz",
+    "provenance": "File phan phoi boi ma nguon ASTGCN (Guo et al., AAAI 2019); cung kich thuoc byte voi ban trong cac kho STFGNN, STD-MAE, STSGCN_Pytorch. Khong tai truc tiep tu PeMS.",
+    "documented_by_source": "170 detectors, July to August 2016, 3 features: flow, occupy, speed (README ASTGCN)"
+  },
+  "period": {
+    "start": "2016-07-01 00:00:00",
+    "step_minutes": 5,
+    "timesteps_5min": 17856,
+    "end_last_step_start": "2016-08-31 23:55:00",
+    "timestamps_note": "File NPZ KHONG chua timestamp. Moc thoi gian duoc SUY RA tu tai lieu nguon (1/7/2016 -> 31/8/2016, 62 ngay x 288 buoc). Kiem tra: ngay luu luong thap nhat la 4/7/2016 (le Quoc khanh My) va cac ngay Chu nhat; mau tuan khop lich. Gio la gio dia phuong Bac My (khong luu mui gio trong file)."
+  },
+  "sensors": {
+    "count": 170,
+    "id_note": "sensor_id = chi so cot 0..169 trong NPZ (giu nguyen thu tu goc). Ma tram PeMS that khong co trong bo du lieu nay; khong gan ten duong, toa do hay camera nao.",
+    "distance_file": {
+      "file": "data/external/pems08/distance.csv",
+      "sha256": "859d68e7583ed4e6016588eaaca494d3ece286dae361614c5c1833017f87eaa7",
+      "rows": 295,
+      "columns": [
+        "from",
+        "to",
+        "cost"
+      ],
+      "note": "Danh sach canh from,to,cost theo chi so sensor 0..169. Don vi cua cost KHONG duoc nguon mo ta. Khong dung trong mo hinh."
+    }
+  },
+  "channels_in_npz": {
+    "order": [
+      "flow",
+      "occupancy",
+      "speed"
+    ],
+    "evidence": "kenh 0 la so nguyen 0..1147 (flow); kenh 1 trong 0..0.90 (occupancy); kenh 2 trong 3.0..82.3, trung vi 64.9 (speed)."
+  },
+  "units": {
+    "flow": "so xe moi 5 phut moi tram (tong cac lan) - theo quy uoc PeMS; file khong ghi don vi",
+    "occupancy": "ty le 0..1",
+    "speed_in_file": "mph (SUY RA: quy uoc PeMS va trung vi 64.9 ~ gioi han toc do 65 mph; file khong ghi don vi)",
+    "conversion": "speed_kmh = speed_mph * 1.609344"
+  },
+  "aggregation_15min": {
+    "rule": "gop 3 buoc 5 phut lien tiep, timestamp = moc bat dau khoang",
+    "flow": "tong (xe/15 phut)",
+    "occupancy": "trung binh so hoc",
+    "speed": "trung binh so hoc (mph) roi doi sang km/h; khong gia quyen theo flow",
+    "zero_flow_steps": "so buoc 5 phut co flow = 0 trong khoang (0..3), cot chat luong"
+  },
+  "labels": {
+    "classes": {
+      "0": "free (>26 km/h)",
+      "1": "congested (16..26 km/h, gom hai dau)",
+      "2": "severe (<16 km/h)"
+    },
+    "thresholds_kmh": {
+      "free_above": 26.0,
+      "congested_min": 16.0,
+      "congested_max": 26.0
+    },
+    "horizon_minutes": 60,
+    "method": "dich chuoi toc do cua tung sensor (da sap xep) di dung 1 gio; loai dong cuoi khong co tuong lai; khong backfill/forward-fill",
+    "note": "Nguong duoc dat cho do thi (km/h). Tren cao toc PEMS08 toc do thuong 60-70 mph (~100-110 km/h) nen hai lop un rat hiem - xem class_distribution."
+  },
+  "quality_checks": {
+    "shape_T_N_C": [
+      17856,
+      170,
+      3
+    ],
+    "nan_cells": 0,
+    "inf_cells": 0,
+    "negative_flow_cells": 0,
+    "flow_above_max_cells": 0,
+    "occupancy_out_of_range_cells": 0,
+    "speed_out_of_range_cells": 0,
+    "zero_flow_cells": 10560,
+    "zero_flow_cells_pct": 0.3479,
+    "zero_flow_and_zero_occupancy_cells": 10560,
+    "flow_zero_but_occupancy_positive_cells": 0,
+    "speed_when_zero_flow_median_mph": 65.0,
+    "sensors_with_zero_flow_share_gt_10pct": 1,
+    "timesteps_with_all_sensors_zero_flow": 0,
+    "min_speed_mph": 3.0,
+    "max_speed_mph": 82.3,
+    "min_flow": 0.0,
+    "max_flow": 1147.0,
+    "min_occupancy": 0.0,
+    "max_occupancy": 0.8955
+  },
+  "derived_columns": {
+    "speed_kmh": "doi don vi tu speed_mph",
+    "zero_flow_steps": "dem o flow = 0 (co the la khong co xe hoac khong do duoc; khong phan biet duoc)",
+    "current_level": "muc un tac tu speed_kmh tai t",
+    "target_timestamp,target_speed_kmh,target_level": "gia tri cua cung sensor tai t + 1 gio"
+  },
+  "excluded": {
+    "weather": "PEMS08 khong kem du lieu thoi tiet California; khong ghep thoi tiet Ha Noi.",
+    "incident_and_vehicle_class": "Khong co trong PEMS08, khong dung.",
+    "hanoi_data": "data/raw/* (Ha Noi, giao thong mo phong) la bo rieng, khong tham gia mo hinh nay."
+  },
+  "datasets": {
+    "5min": {
+      "horizon_steps": 12,
+      "step_minutes": 5,
+      "rows_before_label": 3035520,
+      "rows_dropped_no_future": 2040,
+      "rows_after": 3033480,
+      "file": "data/processed/pems08/pems08_5min.parquet",
+      "rows_before_processing": 3035520,
+      "timestamps": 17856,
+      "first_timestamp": "2016-07-01 00:00:00",
+      "last_feature_timestamp": "2016-08-31 22:55:00",
+      "last_target_timestamp": "2016-08-31 23:55:00",
+      "sensors": 170,
+      "columns": [
+        "sensor_id",
+        "timestamp",
+        "flow",
+        "occupancy",
+        "speed_mph",
+        "zero_flow_steps",
+        "speed_kmh",
+        "target_timestamp",
+        "target_speed_kmh",
+        "current_level",
+        "target_level"
+      ],
+      "current_level_distribution": {
+        "free": {
+          "count": 3030064,
+          "pct": 99.8874
+        },
+        "congested": {
+          "count": 2324,
+          "pct": 0.0766
+        },
+        "severe": {
+          "count": 1092,
+          "pct": 0.036
+        }
+      },
+      "target_level_distribution": {
+        "free": {
+          "count": 3030071,
+          "pct": 99.8876
+        },
+        "congested": {
+          "count": 2323,
+          "pct": 0.0766
+        },
+        "severe": {
+          "count": 1086,
+          "pct": 0.0358
+        }
+      },
+      "rows_with_missing_target_level": 0
+    },
+    "15min": {
+      "horizon_steps": 4,
+      "step_minutes": 15,
+      "rows_before_label": 1011840,
+      "rows_dropped_no_future": 680,
+      "rows_after": 1011160,
+      "file": "data/processed/pems08/pems08_15min.parquet",
+      "rows_before_processing": 1011840,
+      "timestamps": 5952,
+      "first_timestamp": "2016-07-01 00:00:00",
+      "last_feature_timestamp": "2016-08-31 22:45:00",
+      "last_target_timestamp": "2016-08-31 23:45:00",
+      "sensors": 170,
+      "columns": [
+        "sensor_id",
+        "timestamp",
+        "flow",
+        "occupancy",
+        "speed_mph",
+        "zero_flow_steps",
+        "speed_kmh",
+        "target_timestamp",
+        "target_speed_kmh",
+        "current_level",
+        "target_level"
+      ],
+      "current_level_distribution": {
+        "free": {
+          "count": 1010088,
+          "pct": 99.894
+        },
+        "congested": {
+          "count": 730,
+          "pct": 0.0722
+        },
+        "severe": {
+          "count": 342,
+          "pct": 0.0338
+        }
+      },
+      "target_level_distribution": {
+        "free": {
+          "count": 1010090,
+          "pct": 99.8942
+        },
+        "congested": {
+          "count": 730,
+          "pct": 0.0722
+        },
+        "severe": {
+          "count": 340,
+          "pct": 0.0336
+        }
+      },
+      "rows_with_missing_target_level": 0
+    }
+  }
+}

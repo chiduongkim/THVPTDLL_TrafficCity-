@@ -1,0 +1,40 @@
+{
+  "_comment": "Cau hinh chung cho pipeline du doan un tac (benchmark PEMS08). Thay doi nguong/horizon o day roi chay lai build + train.",
+  "dataset": {
+    "name": "PEMS08",
+    "description": "Cam bien duong cao toc PeMS District 8 (San Bernardino, California, Hoa Ky). KHONG phai du lieu Ha Noi.",
+    "source_file": "data/external/pems08/pems08.npz",
+    "source_url": "https://raw.githubusercontent.com/Davidham3/ASTGCN-2019-mxnet/master/data/PEMS08/pems08.npz",
+    "distance_file": "data/external/pems08/distance.csv",
+    "channels": ["flow", "occupancy", "speed"],
+    "start_timestamp": "2016-07-01 00:00:00",
+    "step_minutes": 5,
+    "speed_unit_in_file": "mph",
+    "mph_to_kmh": 1.609344
+  },
+  "labels": {
+    "classes": ["free", "congested", "severe"],
+    "thresholds_kmh": {
+      "free_above": 26.0,
+      "congested_min": 16.0,
+      "congested_max": 26.0
+    }
+  },
+  "horizon_minutes": 60,
+  "aggregation_15min": {
+    "flow": "sum",
+    "occupancy": "mean",
+    "speed": "mean"
+  },
+  "split": {
+    "train": 0.70,
+    "validation": 0.15,
+    "test": 0.15
+  },
+  "seed": 42,
+  "paths": {
+    "processed_dir": "data/processed/pems08",
+    "models_dir": "models/congestion",
+    "reports_dir": "reports/congestion"
+  }
+}

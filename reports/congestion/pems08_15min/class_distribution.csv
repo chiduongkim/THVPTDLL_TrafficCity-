@@ -1,0 +1,4 @@
+,rows,free,congested,severe
+train,706180,705547,452,181
+validation,150790,150557,166,67
+test,151470,151266,112,92
